@@ -1,1 +1,61 @@
-% manual test
+%% manual testing script
+
+%{
+
+    1. threshold and binarise image to show approximate shapes for key
+    features of view
+
+    2. using predicted centroids, build an ellipse of best fit for each
+    feature
+
+    3. repeat using the best fit centroid, use both ellipses to create a
+    predicted feature ellipse
+
+    4. Compare shape of the PFE to expected shape
+
+    5. Measure image gradient/sharpness
+
+    Results :
+
+        - Compare the position of the PFEs, do they imply that all key
+        features are present in the image?
+    
+        - Compare the size/shape of all PFEs, do they imply that key
+        features are correctly represented?
+
+        - Is the image sharpness/gradient distribution appropriate for use?
+
+%}
+
+%% load image 
+img = imread('plax_1.jpg');
+idisp(img);
+
+% convert image to greyscale format
+if ndims(img) == 3
+    img_grey = rgb2gray(img);
+else
+    img_grey = img;
+end
+
+%% Threshold
+
+bw = img_grey > 0.2;
+bw = double(bw);
+
+idisp(bw);
+
+%% sort image by adding triangle frame to act as edges
+top = [411,5];
+left = [53,424];
+right = [679,424];
+
+% add lines
+bw = insertShape(bw, 'Line', [top(1), top(2), left(1), left(2)], 'Color', 'white', 'Linewidth', 5);
+bw = insertShape(bw, 'Line', [top(1), top(2), right(1), right(2)], 'Color', 'white', 'Linewidth', 5);
+
+% Create triangle mask
+triangle_mask = poly2mask([top(1),left(1), right(1)], [top(2),left(2),right(2)], size(bw,1), size(bw,2));
+bw(~triangle_mask) = 1; 
+
+idisp(bw);
