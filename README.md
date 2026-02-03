@@ -10,6 +10,17 @@ Human determination of whether an ultrasound is appropriate follows a set of cri
 - Is the image centered/framed correctly?
 - Is the image sharp enough? (not too blurry)
 
+<br/>
+<br/>
+
+![Labelled image of a PLAX view](Images/plax_labelled.jpg)
+> Labelled PLAX scan [^1]
+ 
+[^1]: https://www.renalfellow.org/2019/06/07/introduction-to-focused-cardiac-ultrasound-the-parasternal-long-axis-view/
+
+<br/>
+<br/>
+
 This module aims to perform a number of steps to cover all of these criteria:
 - Identify where we expect the centroid of key features to be
 - Build an ellipse of best fit for each of these key features and compare it to the expected values
