@@ -39,16 +39,21 @@ master_frame_t = [411,5];
 
 % Predicted feature centroids and deviations
 lv_centroid = [357,251];
-lv_deviation = 10;
+lv_deviation = 5;
 rv_centroid = [438,146];
-rv_deviation = 10;
+rv_deviation = 5;
 ao_centroid = [522,271];
-ao_deviation = 10;
+ao_deviation = 5;
 la_centroid = [472,378];
-la_deviation = 10;
+la_deviation = 5;
 
 % predicted feature ellipse parameters (add when required)
 
+% generated feature variables
+lv_found = false;
+rv_found = false;
+ao_found = false;
+la_found = false;
 
 
 %% load image 
@@ -120,6 +125,63 @@ text(la_box(3),la_box(4), ...
     "LA", 'Color','y','FontSize',10,'FontWeight','bold');
 
 
+% Left ventricle
+lv_box = [lv_centroid(1) - lv_deviation, lv_centroid(2) - lv_deviation, lv_centroid(1) + lv_deviation, lv_centroid(2) + lv_deviation];
+plot_box(lv_box(1),lv_box(2),lv_box(3),lv_box(4),'g','LineWidth',1);
+text(lv_box(3),lv_box(4), ...
+    "LV", 'Color','y','FontSize',10,'FontWeight','bold');
 
+% Right ventricle
+rv_box = [rv_centroid(1) - rv_deviation, rv_centroid(2) - rv_deviation, rv_centroid(1) + rv_deviation, rv_centroid(2) + rv_deviation];
+plot_box(rv_box(1),rv_box(2),rv_box(3),rv_box(4),'g','LineWidth',1);
+text(rv_box(3),rv_box(4), ...
+    "RV", 'Color','y','FontSize',10,'FontWeight','bold');
+
+% Aorta
+ao_box = [ao_centroid(1) - ao_deviation, ao_centroid(2) - ao_deviation, ao_centroid(1) + ao_deviation, ao_centroid(2) + ao_deviation];
+plot_box(ao_box(1),ao_box(2),ao_box(3),ao_box(4),'g','LineWidth',1);
+text(ao_box(3),ao_box(4), ...
+    "AO", 'Color','y','FontSize',10,'FontWeight','bold');
 
 hold off;
+
+%% Select a black pixel from within the centroid boxes to act as the center
+
+% left atrium
+first_la_centroid = selectPredictedCentroid(bw, la_centroid, la_deviation);
+
+if first_la_centroid ~= [0,0]
+    la_found = true;
+end
+
+% left ventricle
+first_lv_centroid = selectPredictedCentroid(bw, lv_centroid, lv_deviation);
+
+if first_lv_centroid ~= [0,0]
+    lv_found = true;
+end
+
+% right ventricle
+first_rv_centroid = selectPredictedCentroid(bw, rv_centroid, rv_deviation);
+
+if first_rv_centroid ~= [0,0]
+    rv_found = true;
+end
+
+% aorta
+first_ao_centroid = selectPredictedCentroid(bw, ao_centroid, ao_deviation);
+
+if first_ao_centroid ~= [0,0]
+    ao_found = true;
+end
+
+
+% if any of the features cant be found, their weighting will be set to 0
+% which will nullify the final result
+
+%% Key feature ellipses
+% perform the first pass of drawing key feature ellipses
+% for each feature, starting at the centroid, propogate lines out at n
+% degree intervals until reaching a white(1) pixel. These lines will
+% provide the set of coordinates that we will build a best fit ellipse from
+
