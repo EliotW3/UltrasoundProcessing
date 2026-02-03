@@ -1,0 +1,13 @@
+# Ultrasound Processing Module
+
+Matlab module to handle the image recognition portion of an automated cardiac ultrasound acquisition robot.
+This is a rudimentary approach using basic computer vision techniques to compare ultrasound scans of a PLAX view to a data set 
+
+Human determination of whether an ultrasound is appropriate follows a set of criteria:
+- 
+
+
+#### Requirements: (as of last update, intended to be reduced as the project progresses)
+    - Computer Vision Toolbox
+    - Peter Corke's Machine Vision Toolbox
+    - Image Processing Toolbox

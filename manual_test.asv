@@ -39,25 +39,16 @@ else
 end
 
 %% scale intensities
-% noise reduction
-g = kgauss(5,2);
-img_smooth = iconvolve(img_grey,2*g);
-
-
 % contrast enhancement
 h = [0 -1 0; -1 5 -1; 0 -1 0];
-img_enhanced = iconvolve(img_smooth, h);
+img_enhanced = iconvolve(img_grey, h);
 
 % rescale
-img_enhanced = double(img_enhanced);
-img_enhanced = img_enhanced - min(img_enhanced(:));
-img_enhanced = img_enhanced / max(img_enhanced(:));
-
-idisp(img_enhanced);
+img_enhanced = doub
 
 %% Threshold
 
-bw = img_enhanced > 0.16;
+bw = img_grey > 0.16;
 bw = double(bw);
 
 idisp(bw);
