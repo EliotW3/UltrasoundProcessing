@@ -143,7 +143,6 @@ plot_box(ao_box(1),ao_box(2),ao_box(3),ao_box(4),'g','LineWidth',1);
 text(ao_box(3),ao_box(4), ...
     "AO", 'Color','y','FontSize',10,'FontWeight','bold');
 
-hold off;
 
 %% Select a black pixel from within the centroid boxes to act as the center
 
@@ -184,4 +183,106 @@ end
 % for each feature, starting at the centroid, propogate lines out at n
 % degree intervals until reaching a white(1) pixel. These lines will
 % provide the set of coordinates that we will build a best fit ellipse from
+
+ao_first_edges = buildFirstEllipse(bw, first_ao_centroid);
+lv_first_edges = buildFirstEllipse(bw,first_lv_centroid);
+rv_first_edges = buildFirstEllipse(bw, first_rv_centroid);
+la_first_edges = buildFirstEllipse(bw,first_la_centroid);
+
+
+% remove outliers from edges outside a set tolerance
+ao_first_edges = cleanEdges(ao_first_edges, first_ao_centroid,40);
+lv_first_edges = cleanEdges(lv_first_edges, first_lv_centroid,40);
+la_first_edges = cleanEdges(la_first_edges, first_la_centroid,40);
+rv_first_edges = cleanEdges(rv_first_edges, first_rv_centroid,40);
+
+%% plotting ellipse edge points (debug)
+
+plot(ao_first_edges(:,1), ao_first_edges(:,2), 'ro', 'MarkerSize', 6, 'LineWidth', 1.5);
+plot(lv_first_edges(:,1), lv_first_edges(:,2), 'go', 'MarkerSize', 6, 'LineWidth', 1.5);
+plot(rv_first_edges(:,1), rv_first_edges(:,2), 'bo', 'MarkerSize', 6, 'LineWidth', 1.5);
+plot(la_first_edges(:,1), la_first_edges(:,2), 'yo', 'MarkerSize', 6, 'LineWidth', 1.5);
+
+
+
+%% create and plot the best fit ellipse to these points
+% aorta
+ao_ellipse = bestFitEllipse(ao_first_edges);
+
+% plot ellipse
+t = linspace(0,2*pi,100);
+x_ellipse = ao_ellipse.x0 + ao_ellipse.a * cos(t) * cos(ao_ellipse.theta) - ao_ellipse.b*sin(t)*sin(ao_ellipse.theta);
+y_ellipse = ao_ellipse.y0 + ao_ellipse.a * cos(t) * sin(ao_ellipse.theta) - ao_ellipse.b*sin(t)*cos(ao_ellipse.theta);
+plot(x_ellipse,y_ellipse, 'r--', 'LineWidth', 2);
+
+% left ventricle
+lv_ellipse = bestFitEllipse(lv_first_edges);
+t = linspace(0,2*pi,100);
+x_ellipse = lv_ellipse.x0 + lv_ellipse.a * cos(t) * cos(lv_ellipse.theta) - lv_ellipse.b*sin(t)*sin(lv_ellipse.theta);
+y_ellipse = lv_ellipse.y0 + lv_ellipse.a * cos(t) * sin(lv_ellipse.theta) - lv_ellipse.b*sin(t)*cos(lv_ellipse.theta);
+plot(x_ellipse,y_ellipse, 'g--', 'LineWidth', 2);
+
+% right ventricle
+rv_ellipse = bestFitEllipse(rv_first_edges);
+t = linspace(0,2*pi,100);
+x_ellipse = rv_ellipse.x0 + rv_ellipse.a * cos(t) * cos(rv_ellipse.theta) - rv_ellipse.b*sin(t)*sin(rv_ellipse.theta);
+y_ellipse = rv_ellipse.y0 + rv_ellipse.a * cos(t) * sin(rv_ellipse.theta) - rv_ellipse.b*sin(t)*cos(rv_ellipse.theta);
+plot(x_ellipse,y_ellipse, 'b--', 'LineWidth', 2);
+
+% left atrium
+la_ellipse = bestFitEllipse(la_first_edges);
+t = linspace(0,2*pi,100);
+x_ellipse = la_ellipse.x0 + la_ellipse.a * cos(t) * cos(la_ellipse.theta) - la_ellipse.b*sin(t)*sin(la_ellipse.theta);
+y_ellipse = la_ellipse.y0 + la_ellipse.a * cos(t) * sin(la_ellipse.theta) - la_ellipse.b*sin(t)*cos(la_ellipse.theta);
+plot(x_ellipse,y_ellipse, 'y--', 'LineWidth', 2);
+
+%% ellipse clean up
+% take the new centroid of the best fit ellipse and perform the same steps
+
+second_ao_centroid = [round(ao_ellipse.x0),round(ao_ellipse.y0)];
+second_lv_centroid = [round(lv_ellipse.x0),round(lv_ellipse.y0)];
+second_la_centroid = [round(la_ellipse.x0),round(la_ellipse.y0)];
+second_rv_centroid = [round(rv_ellipse.x0),round(rv_ellipse.y0)];
+
+ao_second_edges = buildFirstEllipse(bw,second_ao_centroid);
+lv_second_edges = buildFirstEllipse(bw,second_lv_centroid);
+la_second_edges = buildFirstEllipse(bw,second_la_centroid);
+rv_second_edges = buildFirstEllipse(bw,second_rv_centroid);
+
+
+% clean second edges
+
+ao_second_edges = cleanEdges(ao_second_edges, second_ao_centroid,40);
+lv_second_edges = cleanEdges(lv_second_edges, second_lv_centroid,40);
+la_second_edges = cleanEdges(la_second_edges, second_la_centroid,40);
+rv_second_edges = cleanEdges(rv_second_edges, second_rv_centroid,40);
+
+%% plotting ellipse edge points (debug)
+
+plot(ao_second_edges(:,1), ao_second_edges(:,2), 'cx', 'MarkerSize', 6, 'LineWidth', 1.5);
+plot(lv_second_edges(:,1), lv_second_edges(:,2), 'mx', 'MarkerSize', 6, 'LineWidth', 1.5);
+plot(rv_second_edges(:,1), rv_second_edges(:,2), 'yx', 'MarkerSize', 6, 'LineWidth', 1.5);
+plot(la_second_edges(:,1), la_second_edges(:,2), 'gx', 'MarkerSize', 6, 'LineWidth', 1.5);
+
+%% create and plot second pass ellipse of best fit
+ao_ellipse2 = bestFitEllipse(ao_second_edges);
+x_ellipse = ao_ellipse2.x0 + ao_ellipse2.a * cos(t) * cos(ao_ellipse2.theta) - ao_ellipse2.b*sin(t)*sin(ao_ellipse2.theta);
+y_ellipse = ao_ellipse2.y0 + ao_ellipse2.a * cos(t) * sin(ao_ellipse2.theta) - ao_ellipse2.b*sin(t)*cos(ao_ellipse2.theta);
+plot(x_ellipse,y_ellipse, 'c-', 'LineWidth', 2);
+
+lv_ellipse2 = bestFitEllipse(lv_second_edges);
+x_ellipse = lv_ellipse2.x0 + lv_ellipse2.a * cos(t) * cos(lv_ellipse2.theta) - lv_ellipse2.b*sin(t)*sin(lv_ellipse2.theta);
+y_ellipse = lv_ellipse2.y0 + lv_ellipse2.a * cos(t) * sin(lv_ellipse2.theta) - lv_ellipse2.b*sin(t)*cos(lv_ellipse2.theta);
+plot(x_ellipse,y_ellipse, 'm-', 'LineWidth', 2);
+
+rv_ellipse2 = bestFitEllipse(rv_second_edges);
+x_ellipse = rv_ellipse2.x0 + rv_ellipse2.a * cos(t) * cos(rv_ellipse2.theta) - rv_ellipse2.b*sin(t)*sin(rv_ellipse2.theta);
+y_ellipse = rv_ellipse2.y0 + rv_ellipse2.a * cos(t) * sin(rv_ellipse2.theta) - rv_ellipse2.b*sin(t)*cos(rv_ellipse2.theta);
+plot(x_ellipse,y_ellipse, 'y-', 'LineWidth', 2);
+
+la_ellipse2 = bestFitEllipse(la_second_edges);
+x_ellipse = la_ellipse2.x0 + la_ellipse2.a * cos(t) * cos(la_ellipse2.theta) - la_ellipse2.b*sin(t)*sin(la_ellipse2.theta);
+y_ellipse = la_ellipse2.y0 + la_ellipse2.a * cos(t) * sin(la_ellipse2.theta) - la_ellipse2.b*sin(t)*cos(la_ellipse2.theta);
+plot(x_ellipse,y_ellipse, 'g-', 'LineWidth', 2);
+
 
