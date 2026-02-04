@@ -34,3 +34,4 @@ This module aims to perform a number of steps to cover all of these criteria:
     - Computer Vision Toolbox
     - Peter Corke's Machine Vision Toolbox
     - Image Processing Toolbox
+    - Statistics and Machine Learning Toolbox
