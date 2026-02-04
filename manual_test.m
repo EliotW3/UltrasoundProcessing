@@ -88,7 +88,7 @@ idisp(img_enhanced);
 
 %% Threshold
 
-bw = img_enhanced > 0.14;
+bw = img_enhanced > 0.12;
 bw = double(bw);
 
 figure;
@@ -211,30 +211,30 @@ ao_ellipse = bestFitEllipse(ao_first_edges);
 
 % plot ellipse
 t = linspace(0,2*pi,100);
-x_ellipse = ao_ellipse.x0 + ao_ellipse.a * cos(t) * cos(ao_ellipse.theta) - ao_ellipse.b*sin(t)*sin(ao_ellipse.theta);
-y_ellipse = ao_ellipse.y0 + ao_ellipse.a * cos(t) * sin(ao_ellipse.theta) - ao_ellipse.b*sin(t)*cos(ao_ellipse.theta);
-plot(x_ellipse,y_ellipse, 'r--', 'LineWidth', 2);
+aox_ellipse = ao_ellipse.x0 + ao_ellipse.a * cos(t) * cos(ao_ellipse.theta) - ao_ellipse.b*sin(t)*sin(ao_ellipse.theta);
+aoy_ellipse = ao_ellipse.y0 + ao_ellipse.a * cos(t) * sin(ao_ellipse.theta) - ao_ellipse.b*sin(t)*cos(ao_ellipse.theta);
+plot(aox_ellipse,aoy_ellipse, 'r--', 'LineWidth', 2);
 
 % left ventricle
 lv_ellipse = bestFitEllipse(lv_first_edges);
 t = linspace(0,2*pi,100);
-x_ellipse = lv_ellipse.x0 + lv_ellipse.a * cos(t) * cos(lv_ellipse.theta) - lv_ellipse.b*sin(t)*sin(lv_ellipse.theta);
-y_ellipse = lv_ellipse.y0 + lv_ellipse.a * cos(t) * sin(lv_ellipse.theta) - lv_ellipse.b*sin(t)*cos(lv_ellipse.theta);
-plot(x_ellipse,y_ellipse, 'g--', 'LineWidth', 2);
+lvx_ellipse = lv_ellipse.x0 + lv_ellipse.a * cos(t) * cos(lv_ellipse.theta) - lv_ellipse.b*sin(t)*sin(lv_ellipse.theta);
+lvy_ellipse = lv_ellipse.y0 + lv_ellipse.a * cos(t) * sin(lv_ellipse.theta) - lv_ellipse.b*sin(t)*cos(lv_ellipse.theta);
+plot(lvx_ellipse,lvy_ellipse, 'g--', 'LineWidth', 2);
 
 % right ventricle
 rv_ellipse = bestFitEllipse(rv_first_edges);
 t = linspace(0,2*pi,100);
-x_ellipse = rv_ellipse.x0 + rv_ellipse.a * cos(t) * cos(rv_ellipse.theta) - rv_ellipse.b*sin(t)*sin(rv_ellipse.theta);
-y_ellipse = rv_ellipse.y0 + rv_ellipse.a * cos(t) * sin(rv_ellipse.theta) - rv_ellipse.b*sin(t)*cos(rv_ellipse.theta);
-plot(x_ellipse,y_ellipse, 'b--', 'LineWidth', 2);
+rvx_ellipse = rv_ellipse.x0 + rv_ellipse.a * cos(t) * cos(rv_ellipse.theta) - rv_ellipse.b*sin(t)*sin(rv_ellipse.theta);
+rvy_ellipse = rv_ellipse.y0 + rv_ellipse.a * cos(t) * sin(rv_ellipse.theta) - rv_ellipse.b*sin(t)*cos(rv_ellipse.theta);
+plot(rvx_ellipse,rvy_ellipse, 'b--', 'LineWidth', 2);
 
 % left atrium
 la_ellipse = bestFitEllipse(la_first_edges);
 t = linspace(0,2*pi,100);
-x_ellipse = la_ellipse.x0 + la_ellipse.a * cos(t) * cos(la_ellipse.theta) - la_ellipse.b*sin(t)*sin(la_ellipse.theta);
-y_ellipse = la_ellipse.y0 + la_ellipse.a * cos(t) * sin(la_ellipse.theta) - la_ellipse.b*sin(t)*cos(la_ellipse.theta);
-plot(x_ellipse,y_ellipse, 'y--', 'LineWidth', 2);
+lax_ellipse = la_ellipse.x0 + la_ellipse.a * cos(t) * cos(la_ellipse.theta) - la_ellipse.b*sin(t)*sin(la_ellipse.theta);
+lay_ellipse = la_ellipse.y0 + la_ellipse.a * cos(t) * sin(la_ellipse.theta) - la_ellipse.b*sin(t)*cos(la_ellipse.theta);
+plot(lax_ellipse,lay_ellipse, 'y--', 'LineWidth', 2);
 
 %% ellipse clean up
 % take the new centroid of the best fit ellipse and perform the same steps
@@ -266,23 +266,71 @@ plot(la_second_edges(:,1), la_second_edges(:,2), 'gx', 'MarkerSize', 6, 'LineWid
 
 %% create and plot second pass ellipse of best fit
 ao_ellipse2 = bestFitEllipse(ao_second_edges);
-x_ellipse = ao_ellipse2.x0 + ao_ellipse2.a * cos(t) * cos(ao_ellipse2.theta) - ao_ellipse2.b*sin(t)*sin(ao_ellipse2.theta);
-y_ellipse = ao_ellipse2.y0 + ao_ellipse2.a * cos(t) * sin(ao_ellipse2.theta) - ao_ellipse2.b*sin(t)*cos(ao_ellipse2.theta);
-plot(x_ellipse,y_ellipse, 'c-', 'LineWidth', 2);
+ao2x_ellipse = ao_ellipse2.x0 + ao_ellipse2.a * cos(t) * cos(ao_ellipse2.theta) - ao_ellipse2.b*sin(t)*sin(ao_ellipse2.theta);
+ao2y_ellipse = ao_ellipse2.y0 + ao_ellipse2.a * cos(t) * sin(ao_ellipse2.theta) - ao_ellipse2.b*sin(t)*cos(ao_ellipse2.theta);
+plot(ao2x_ellipse,ao2y_ellipse, 'c-', 'LineWidth', 2);
 
 lv_ellipse2 = bestFitEllipse(lv_second_edges);
-x_ellipse = lv_ellipse2.x0 + lv_ellipse2.a * cos(t) * cos(lv_ellipse2.theta) - lv_ellipse2.b*sin(t)*sin(lv_ellipse2.theta);
-y_ellipse = lv_ellipse2.y0 + lv_ellipse2.a * cos(t) * sin(lv_ellipse2.theta) - lv_ellipse2.b*sin(t)*cos(lv_ellipse2.theta);
-plot(x_ellipse,y_ellipse, 'm-', 'LineWidth', 2);
+lv2x_ellipse = lv_ellipse2.x0 + lv_ellipse2.a * cos(t) * cos(lv_ellipse2.theta) - lv_ellipse2.b*sin(t)*sin(lv_ellipse2.theta);
+lv2y_ellipse = lv_ellipse2.y0 + lv_ellipse2.a * cos(t) * sin(lv_ellipse2.theta) - lv_ellipse2.b*sin(t)*cos(lv_ellipse2.theta);
+plot(lv2x_ellipse,lv2y_ellipse, 'm-', 'LineWidth', 2);
 
 rv_ellipse2 = bestFitEllipse(rv_second_edges);
-x_ellipse = rv_ellipse2.x0 + rv_ellipse2.a * cos(t) * cos(rv_ellipse2.theta) - rv_ellipse2.b*sin(t)*sin(rv_ellipse2.theta);
-y_ellipse = rv_ellipse2.y0 + rv_ellipse2.a * cos(t) * sin(rv_ellipse2.theta) - rv_ellipse2.b*sin(t)*cos(rv_ellipse2.theta);
-plot(x_ellipse,y_ellipse, 'y-', 'LineWidth', 2);
+rv2x_ellipse = rv_ellipse2.x0 + rv_ellipse2.a * cos(t) * cos(rv_ellipse2.theta) - rv_ellipse2.b*sin(t)*sin(rv_ellipse2.theta);
+rv2y_ellipse = rv_ellipse2.y0 + rv_ellipse2.a * cos(t) * sin(rv_ellipse2.theta) - rv_ellipse2.b*sin(t)*cos(rv_ellipse2.theta);
+plot(rv2x_ellipse,rv2y_ellipse, 'y-', 'LineWidth', 2);
 
 la_ellipse2 = bestFitEllipse(la_second_edges);
-x_ellipse = la_ellipse2.x0 + la_ellipse2.a * cos(t) * cos(la_ellipse2.theta) - la_ellipse2.b*sin(t)*sin(la_ellipse2.theta);
-y_ellipse = la_ellipse2.y0 + la_ellipse2.a * cos(t) * sin(la_ellipse2.theta) - la_ellipse2.b*sin(t)*cos(la_ellipse2.theta);
-plot(x_ellipse,y_ellipse, 'g-', 'LineWidth', 2);
+la2x_ellipse = la_ellipse2.x0 + la_ellipse2.a * cos(t) * cos(la_ellipse2.theta) - la_ellipse2.b*sin(t)*sin(la_ellipse2.theta);
+la2y_ellipse = la_ellipse2.y0 + la_ellipse2.a * cos(t) * sin(la_ellipse2.theta) - la_ellipse2.b*sin(t)*cos(la_ellipse2.theta);
+plot(la2x_ellipse,la2y_ellipse, 'g-', 'LineWidth', 2);
 
 
+% https://www.inf.fu-berlin.de/inst/pubs/tr-b-98-05.abstract.html smallest
+% encolsing ellipses
+
+% https://ieeexplore.ieee.org/document/4561253?arnumber=4561253&abstractAccess=no&userType=inst
+hold off;
+%% Create the minimum volume ellipse that encompasses both passes at an ellipse.
+figure;
+idisp(img_enhanced);
+hold on;
+
+% add text again
+text(la_box(3),la_box(4), ...
+    "LA", 'Color','y','FontSize',10,'FontWeight','bold');
+text(lv_box(3),lv_box(4), ...
+    "LV", 'Color','y','FontSize',10,'FontWeight','bold');
+text(rv_box(3),rv_box(4), ...
+    "RV", 'Color','y','FontSize',10,'FontWeight','bold');
+text(ao_box(3),ao_box(4), ...
+    "AO", 'Color','y','FontSize',10,'FontWeight','bold');
+
+
+% aorta
+ao_P = [aox_ellipse, ao2x_ellipse;
+     aoy_ellipse, ao2y_ellipse];
+
+[A, c] = MinVolEllipse(ao_P,.01);
+Ellipse_plot(A,c,20);
+
+% left ventricle
+lv_P = [lvx_ellipse, lv2x_ellipse;
+     lvy_ellipse, lv2y_ellipse];
+
+[A, c] = MinVolEllipse(lv_P,.01);
+Ellipse_plot(A,c,20);
+
+% left atrium
+la_P = [lax_ellipse, la2x_ellipse;
+     lay_ellipse, la2y_ellipse];
+
+[A, c] = MinVolEllipse(la_P,.01);
+Ellipse_plot(A,c,20);
+
+% right ventricle
+rv_P = [rvx_ellipse, rv2x_ellipse;
+     rvy_ellipse, rv2y_ellipse];
+
+[A, c] = MinVolEllipse(rv_P,.01);
+Ellipse_plot(A,c,20);

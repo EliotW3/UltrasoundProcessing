@@ -16,5 +16,8 @@ end
 
     % remove any value greater than threshold % of the trimmed mean
     cleaned_edges = points(distances <= trim_d_mean * (1 + threshold / 100), :);
+    % also remove any value less than threshold % of the trimmed mean
+    cleaned_edges = cleaned_edges(distances(distances <= trim_d_mean * (1 + threshold / 100)) >= trim_d_mean * (1 - threshold / 100), :);
+
 
 end

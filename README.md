@@ -29,9 +29,28 @@ This module aims to perform a number of steps to cover all of these criteria:
     - Are the key feature shapes appropriate? (2,3,4)
     - Is the overall sharpness of the image within acceptable thresholds? (5)
 
+<br/>
+
+## Example:
+Input image:
+![Input ultrasound scan of a PLAX view](OutputImages/input.png)
+
+First pass creating approximate feature areas:
+![First pass creating approximate feature areas](OutputImages/processing_passes.png)
+
+Output image:
+![Output image](OutputImages/output.png)
+
+<br/>
 
 #### Requirements: (as of last update, intended to be reduced as the project progresses)
     - Computer Vision Toolbox
     - Peter Corke's Machine Vision Toolbox
     - Image Processing Toolbox
     - Statistics and Machine Learning Toolbox
+
+
+### Credits
+    - Nikolai Chernov (2026). Ellipse Fit (Direct method) (https://uk.mathworks.com/matlabcentral/fileexchange/22684-ellipse-fit-direct-method), MATLAB Central File Exchange. Retrieved February 4, 2026. 
+    - Nima Moshtagh (2026). Minimum Volume Enclosing Ellipsoid (https://uk.mathworks.com/matlabcentral/fileexchange/9542-minimum-volume-enclosing-ellipsoid), MATLAB Central File Exchange. Retrieved February 4, 2026. 
+    - Nima Moshtagh (2026). Plot an ellipse in "center form" (https://uk.mathworks.com/matlabcentral/fileexchange/13844-plot-an-ellipse-in-center-form), MATLAB Central File Exchange. Retrieved February 4, 2026. 
