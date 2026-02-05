@@ -314,12 +314,28 @@ ao_P = [aox_ellipse, ao2x_ellipse;
 [A, c] = MinVolEllipse(ao_P,.01);
 Ellipse_plot(A,c,20);
 
+% get information about the aorta ellipse
+[U, Q, V] = svd(A);
+
+ao_cent = c;
+ao_r1 = 1/sqrt(Q(1,1));
+ao_r2 = 1/sqrt(Q(2,2));
+ao_ori = atan2(V(2,1),V(1,1));
+
+
 % left ventricle
 lv_P = [lvx_ellipse, lv2x_ellipse;
      lvy_ellipse, lv2y_ellipse];
 
 [A, c] = MinVolEllipse(lv_P,.01);
 Ellipse_plot(A,c,20);
+
+[U, Q, V] = svd(A);
+
+lv_cent = c;
+lv_r1 = 1/sqrt(Q(1,1));
+lv_r2 = 1/sqrt(Q(2,2));
+lv_ori = atan2(V(2,1),V(1,1));
 
 % left atrium
 la_P = [lax_ellipse, la2x_ellipse;
@@ -328,9 +344,57 @@ la_P = [lax_ellipse, la2x_ellipse;
 [A, c] = MinVolEllipse(la_P,.01);
 Ellipse_plot(A,c,20);
 
+[U, Q, V] = svd(A);
+
+la_cent = c;
+la_r1 = 1/sqrt(Q(1,1));
+la_r2 = 1/sqrt(Q(2,2));
+la_ori = atan2(V(2,1),V(1,1));
+
 % right ventricle
 rv_P = [rvx_ellipse, rv2x_ellipse;
      rvy_ellipse, rv2y_ellipse];
 
 [A, c] = MinVolEllipse(rv_P,.01);
 Ellipse_plot(A,c,20);
+
+[U, Q, V] = svd(A);
+
+rv_cent = c;
+rv_r1 = 1/sqrt(Q(1,1));
+rv_r2 = 1/sqrt(Q(2,2));
+rv_ori = atan2(V(2,1),V(1,1));
+
+
+%% output values for each ellipse 
+% major and minor axis lengths, orientation, area
+
+
+ids = ["feature"];
+centroids = [ao_cent, lv_cent, la_cent, rv_cent];
+r1s = [ao_r1,lv_r1,la_r1,rv_r1];
+r2s = [ao_r2, lv_r2, la_r2, rv_r2];
+orientations = [ao_ori, lv_ori, la_ori, rv_ori];
+normalized_r = r1s ./ r2s;
+
+
+
+
+output_data = struct('Feature', ids,...
+    'Centroids', num2cell(centroids',2)',...
+    'R1', num2cell(r1s),...
+    'R2', num2cell(r2s),...
+    'Orientation', num2cell(orientations),...
+    'Normalised_R', num2cell(normalized_r));
+
+% clean this up later - should be assigned through ids
+output_data(1).Feature = "Aorta";
+output_data(2).Feature = "Left Ventricle";
+output_data(3).Feature = "Left Atrium";
+output_data(4).Feature = "Right Ventricle";
+
+output_table = struct2table(output_data);
+disp(output_table);
+
+% write to csv
+%writetable(output_table, 'output.csv');

@@ -32,16 +32,34 @@ This module aims to perform a number of steps to cover all of these criteria:
 <br/>
 
 ## Example:
-Input image:
+##### Input image:
 ![Input ultrasound scan of a PLAX view](OutputImages/input.png)
 
-First pass creating approximate feature areas:
+##### First pass creating approximate feature areas:
 ![First pass creating approximate feature areas](OutputImages/processing_passes.png)
 
-Output image:
+##### Output image:
 ![Output image](OutputImages/output.png)
 
 <br/>
+
+##### Output values
+    - major axis length
+    - minor axis length
+    - normalized axis length (major relative to minor)
+    - orientation
+    - area
+
+These values are used to create a confidence value for each key feature in the image.
+
+```
+    normalized size = minor axis / major axis
+    
+    shape = (normalized size / expected normalized size) * (orientation / expected orientation) * shape found (0 = no, 1 = yes)
+
+    confidence score = average( key feature shape values )
+```
+
 
 #### Requirements: (as of last update, intended to be reduced as the project progresses)
     - Computer Vision Toolbox
@@ -50,7 +68,7 @@ Output image:
     - Statistics and Machine Learning Toolbox
 
 
-### Credits
+#### Credits
     - Nikolai Chernov (2026). Ellipse Fit (Direct method) (https://uk.mathworks.com/matlabcentral/fileexchange/22684-ellipse-fit-direct-method), MATLAB Central File Exchange. Retrieved February 4, 2026. 
     - Nima Moshtagh (2026). Minimum Volume Enclosing Ellipsoid (https://uk.mathworks.com/matlabcentral/fileexchange/9542-minimum-volume-enclosing-ellipsoid), MATLAB Central File Exchange. Retrieved February 4, 2026. 
     - Nima Moshtagh (2026). Plot an ellipse in "center form" (https://uk.mathworks.com/matlabcentral/fileexchange/13844-plot-an-ellipse-in-center-form), MATLAB Central File Exchange. Retrieved February 4, 2026. 
