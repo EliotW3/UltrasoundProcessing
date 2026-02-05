@@ -379,7 +379,7 @@ disp(focus_measure);
 % major and minor axis lengths, orientation, area
 
 
-ids = ["feature"];
+ids = ["feature"]; % use {[]}?
 centroids = [ao_cent, lv_cent, la_cent, rv_cent];
 r1s = [ao_r1,lv_r1,la_r1,rv_r1];
 r2s = [ao_r2, lv_r2, la_r2, rv_r2];

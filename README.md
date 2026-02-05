@@ -1,6 +1,6 @@
 # Ultrasound Processing Module
 
-Matlab module to handle the image recognition portion of an automated cardiac ultrasound acquisition robot.
+Simple Matlab module to handle the image recognition portion of an automated cardiac ultrasound acquisition robot.
 This is a rudimentary approach using basic computer vision techniques to compare ultrasound scans of a PLAX view to a data set of what we would expect to see in a PLAX view.
 
 Human determination of whether an ultrasound is appropriate follows a set of criteria:
