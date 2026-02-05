@@ -55,11 +55,11 @@ These values are used to create a confidence value for each key feature in the i
 ```
     normalized size = minor axis / major axis
     
-    shape = (normalized size / expected normalized size) * (orientation / expected orientation) * shape found (0 = no, 1 = yes)
+    shape = (abs(1-(expected size / normalized size)) + abs(1-(expected orientation / orientation))) * shape found (0 = no, 1 = yes)
 
     confidence score = average( key feature shape values )
 ```
-
+Scores closest to 0 represent the most accurate scan to the data set.
 
 #### Requirements: (as of last update, intended to be reduced as the project progresses)
     - Computer Vision Toolbox
