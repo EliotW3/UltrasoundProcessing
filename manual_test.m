@@ -365,6 +365,15 @@ rv_r1 = 1/sqrt(Q(1,1));
 rv_r2 = 1/sqrt(Q(2,2));
 rv_ori = atan2(V(2,1),V(1,1));
 
+%% sharpness/blurriness value - not sure usefulness / accuracy of this data
+
+% use variance of laplacian where higher values indicate sharper images
+lap_kernel = fspecial('laplacian', 0);
+lap_img = imfilter(img_enhanced,lap_kernel,'replicate');
+focus_measure = var(lap_img(:));
+
+disp(focus_measure);
+
 
 %% output values for each ellipse 
 % major and minor axis lengths, orientation, area
@@ -376,6 +385,7 @@ r1s = [ao_r1,lv_r1,la_r1,rv_r1];
 r2s = [ao_r2, lv_r2, la_r2, rv_r2];
 orientations = [ao_ori, lv_ori, la_ori, rv_ori];
 normalized_r = r1s ./ r2s;
+found = [ao_found, lv_found, la_found, rv_found];
 
 
 
@@ -385,7 +395,8 @@ output_data = struct('Feature', ids,...
     'R1', num2cell(r1s),...
     'R2', num2cell(r2s),...
     'Orientation', num2cell(orientations),...
-    'Normalised_R', num2cell(normalized_r));
+    'Normalised_R', num2cell(normalized_r),...
+    'Found_Query', num2cell(found));
 
 % clean this up later - should be assigned through ids
 output_data(1).Feature = "Aorta";
@@ -397,4 +408,4 @@ output_table = struct2table(output_data);
 disp(output_table);
 
 % write to csv
-%writetable(output_table, 'output.csv');
+writetable(output_table, 'output.csv');
